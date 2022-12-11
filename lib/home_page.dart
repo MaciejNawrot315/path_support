@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:path_support/bloc/guide/guide_cubit.dart';
 import 'package:path_support/bloc/qr_pair/qr_pair_cubit.dart';
 import 'package:path_support/models/adj_node.dart';
-import 'package:path_support/models/guide.dart';
+import 'package:path_support/models/building.dart';
 import 'package:path_support/models/message_to_read.dart';
 import 'package:path_support/models/node.dart';
 import 'package:path_support/models/qr_code.dart';
@@ -18,11 +20,35 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   MyBarcode? prevBarcode;
   @override
+  void initState() {
+    super.initState();
+    // Box<dynamic> box = Hive.box('buildings');
+    // Building building = box.get("PSL")!;
+
+    // print(building.graph.first.adjNodes.first.index);
+    Box<dynamic> box = Hive.box('buildings');
+    Building building = Building(name: "PSL", graph: fillGraph());
+    box.put(building.name, building);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocListener<QrPairCubit, QrPairState>(
       listener: (context, state) {
         if (state is QrPairActive) {
-          checkDijkstra();
+          if (state.barcode!.buildingName ==
+              context.read<GuideCubit>().state.building?.name) {
+            return;
+          }
+          Box<dynamic> box = Hive.box("buildings");
+          Building building = box.get(state.barcode!.buildingName)!;
+
+          if (!building.graph.asMap().containsKey(state.qrCode!.pairIndex)) {
+            throw Exception("Pair index not found");
+          }
+
+          context.read<GuideCubit>().newBuildingChoosed(
+              building, building.graph[state.qrCode!.pairIndex]);
         }
       },
       child: BlocBuilder<QrPairCubit, QrPairState>(
@@ -35,32 +61,7 @@ class _HomePageState extends State<HomePage> {
                   onDetect: (barcode, args) async {
                     if (barcode.rawValue == null) {
                     } else {
-                      MyBarcode? currentBarcode = parseAndValidateQr(barcode);
-                      if (currentBarcode == null) return;
-                      if (prevBarcode == null ||
-                          prevBarcode!.format == currentBarcode.format) {
-                        prevBarcode = currentBarcode;
-                        return;
-                      }
-                      if (prevBarcode!.pairIndex == currentBarcode.pairIndex) {
-                        if (prevBarcode!.format == BarcodeFormat.code128 &&
-                            currentBarcode.format == BarcodeFormat.qrCode) {
-                          context.read<QrPairCubit>().updateActivePair(
-                                prevBarcode!,
-                                currentBarcode,
-                              );
-                        } else if (prevBarcode!.format ==
-                                BarcodeFormat.qrCode &&
-                            currentBarcode.format == BarcodeFormat.code128) {
-                          context.read<QrPairCubit>().updateActivePair(
-                                currentBarcode,
-                                prevBarcode!,
-                              );
-                        }
-                      } else {
-                        context.read<QrPairCubit>().deactivePair();
-                      }
-                      prevBarcode == currentBarcode;
+                      context.read<QrPairCubit>().updatePair(barcode);
                     }
                   },
                 ),
@@ -92,31 +93,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  MyBarcode? parseAndValidateQr(Barcode barcode) {
-    try {
-      List<String>? barcodeInfo = barcode.rawValue?.split(':');
-      if (barcodeInfo == null ||
-          barcodeInfo.length != 3 ||
-          barcode.corners == null ||
-          barcode.corners?.length != 4 ||
-          (barcode.format != BarcodeFormat.code128 &&
-              barcode.format != BarcodeFormat.qrCode)) {
-        return null;
-      }
-      int pairIndex = int.parse(barcodeInfo[1]);
-
-      return MyBarcode(
-          buildingName: barcodeInfo[0],
-          corners: barcode.corners!,
-          pairIndex: pairIndex,
-          format: barcode.format);
-    } on Exception {
-      return null;
-    }
-  }
-
-  checkDijkstra() {
-    Guide guide = Guide();
+  List<Node> fillGraph() {
     List<Node> graph = [];
     for (int i = 0; i < 9; i++) {
       graph.add(Node(
@@ -159,7 +136,6 @@ class _HomePageState extends State<HomePage> {
     graph[8].adjNodes.add(AdjNode(index: 2, distance: 2));
     graph[8].adjNodes.add(AdjNode(index: 6, distance: 6));
     graph[8].adjNodes.add(AdjNode(index: 7, distance: 1));
-    List<Node> path = guide.fastestPathToTargetDijkstra(0, graph, 4);
-    print(path);
+    return graph;
   }
 }
