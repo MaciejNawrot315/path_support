@@ -6,24 +6,24 @@ part of 'message_to_read.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class MessToReadAdapter extends TypeAdapter<MessToRead> {
+class MessageToReadAdapter extends TypeAdapter<MessageToRead> {
   @override
   final int typeId = 4;
 
   @override
-  MessToRead read(BinaryReader reader) {
+  MessageToRead read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return MessToRead(
+    return MessageToRead(
       message: fields[0] as String,
       position: fields[1] as RelativePosition,
     );
   }
 
   @override
-  void write(BinaryWriter writer, MessToRead obj) {
+  void write(BinaryWriter writer, MessageToRead obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
@@ -38,7 +38,7 @@ class MessToReadAdapter extends TypeAdapter<MessToRead> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MessToReadAdapter &&
+      other is MessageToReadAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

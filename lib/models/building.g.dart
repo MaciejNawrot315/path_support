@@ -19,17 +19,20 @@ class BuildingAdapter extends TypeAdapter<Building> {
     return Building(
       name: fields[0] as String,
       graph: (fields[1] as List).cast<Node>(),
+      fullName: fields[2] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Building obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.graph);
+      ..write(obj.graph)
+      ..writeByte(2)
+      ..write(obj.fullName);
   }
 
   @override

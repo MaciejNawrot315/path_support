@@ -19,17 +19,20 @@ class AdjNodeAdapter extends TypeAdapter<AdjNode> {
     return AdjNode(
       index: fields[0] as int,
       distance: fields[1] as double,
+      pathDescriptions: (fields[2] as List).cast<MessageToRead>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, AdjNode obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.index)
       ..writeByte(1)
-      ..write(obj.distance);
+      ..write(obj.distance)
+      ..writeByte(2)
+      ..write(obj.pathDescriptions);
   }
 
   @override

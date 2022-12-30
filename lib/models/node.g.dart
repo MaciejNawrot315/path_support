@@ -21,7 +21,7 @@ class NodeAdapter extends TypeAdapter<Node> {
       tempParent: fields[1] as int,
       index: fields[2] as int,
       adjNodes: (fields[3] as List).cast<AdjNode>(),
-      messToRead: (fields[5] as List).cast<MessToRead>(),
+      description: (fields[5] as List).cast<MessageToRead>(),
       tempDistance: fields[4] as double,
     );
   }
@@ -39,7 +39,7 @@ class NodeAdapter extends TypeAdapter<Node> {
       ..writeByte(3)
       ..write(obj.adjNodes)
       ..writeByte(5)
-      ..write(obj.messToRead)
+      ..write(obj.description)
       ..writeByte(4)
       ..write(obj.tempDistance);
   }

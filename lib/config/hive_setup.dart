@@ -14,7 +14,7 @@ class HiveSetup {
       ..init(appDocumentDirectory.path)
       ..registerAdapter(BuildingAdapter())
       ..registerAdapter(NodeAdapter())
-      ..registerAdapter(MessToReadAdapter())
+      ..registerAdapter(MessageToReadAdapter())
       ..registerAdapter(RelativePositionAdapter())
       ..registerAdapter(AdjNodeAdapter());
     await Hive.openBox("buildings");

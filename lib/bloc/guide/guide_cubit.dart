@@ -1,6 +1,6 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_support/models/building.dart';
+import 'package:path_support/models/message_to_read.dart';
 import 'package:path_support/models/node.dart';
 
 part 'guide_state.dart';
@@ -10,8 +10,41 @@ class GuideCubit extends Cubit<GuideState> {
   Future<void> newBuildingChoosed(
       Building building, Node currentLocation) async {
     emit(BuildingChoosed(building: building, currentLocation: currentLocation));
-    List<Node> path = fastestPathToTargetDijkstra(0, 4);
-    print(path);
+  }
+
+  Future<void> findDestination(String name, RelativePosition qrAngle) async {
+    Building building = state.building!;
+    Node currentLocation = state.currentLocation!;
+    int target = building.graph.indexWhere((element) => element.name == name);
+    List<Node> path =
+        fastestPathToTargetDijkstra(currentLocation.index, target);
+    emit(TargetChoosed(
+      building: building,
+      currentLocation: currentLocation,
+      path: path,
+      target: target,
+      currentStep: 0,
+      currentRotation: qrAngle,
+    ));
+  }
+
+  Future<void> nextStep(int newNodeIndex) async {
+    int currentStep = state.currentStep!;
+    int nextStep = currentStep + 1;
+    if (newNodeIndex == state.path[nextStep].index) {
+      Node currentLocation = state.path[nextStep];
+      emit((state as TargetChoosed).copyWith(
+        currentStep: nextStep,
+        currentLocation: currentLocation,
+      ));
+    }
+  }
+
+  void targetReached() {
+    emit(TargetReached(
+      currentLocation: state.currentLocation!,
+      building: state.building!,
+    ));
   }
 
   List<Node> fastestPathToTargetDijkstra(int startingNode, int target) {
@@ -51,5 +84,18 @@ class GuideCubit extends Cubit<GuideState> {
     shortestPath.add(graph[startingNode]);
     shortestPath = shortestPath.reversed.toList();
     return shortestPath;
+  }
+
+  void descriptionMode() {
+    emit(GuideDescriptionMode(
+      building: state.building!,
+    ));
+  }
+
+  void navigationMode() {
+    emit(GuideNavigationMode(
+      building: state.building!,
+      currentLocation: state.currentLocation!,
+    ));
   }
 }

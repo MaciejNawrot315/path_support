@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:path_support/models/message_to_read.dart';
 import 'package:path_support/models/qr_code.dart';
 
 part 'qr_pair_state.dart';
@@ -46,6 +47,7 @@ class QrPairCubit extends Cubit<QrPairState> {
     double qrCodeMidX = (qrCodeCorners[0].dx + qrCodeCorners[2].dx) / 2;
     double qrCodeMidY = (qrCodeCorners[0].dy + qrCodeCorners[2].dy) / 2;
     Offset offset = Offset(qrCodeMidX - barcodeMidX, qrCodeMidY - barcodeMidY);
+    print(convertToRelativePosition(offset.direction, RelativePosition.N));
     return offset.direction;
   }
 

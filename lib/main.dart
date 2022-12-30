@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_support/bloc/guide/guide_cubit.dart';
 import 'package:path_support/bloc/qr_pair/qr_pair_cubit.dart';
 import 'package:path_support/config/hive_setup.dart';
-import 'package:path_support/home_page.dart';
+import 'package:path_support/view/home_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
