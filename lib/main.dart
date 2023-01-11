@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path_support/bloc/compass_bloc/compass_bloc.dart';
 import 'package:path_support/bloc/guide/guide_cubit.dart';
 import 'package:path_support/bloc/qr_pair/qr_pair_cubit.dart';
 import 'package:path_support/config/hive_setup.dart';
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<CompassBloc>(
+          create: (BuildContext context) => CompassBloc(),
+        ),
         BlocProvider<QrPairCubit>(
           create: (BuildContext context) => QrPairCubit(),
         ),
@@ -32,6 +36,7 @@ class MyApp extends StatelessWidget {
       ],
       child: const MaterialApp(
         title: 'Path Support',
+        //showSemanticsDebugger: true,
         home: HomePage(),
       ),
     );

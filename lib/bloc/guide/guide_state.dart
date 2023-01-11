@@ -6,7 +6,8 @@ abstract class GuideState {
   final List<Node> path;
   final int? target;
   final int? currentStep;
-  final RelativePosition? currentRotation;
+  final double? currentRotation;
+  final double? compassSnapshot;
   const GuideState({
     this.building,
     this.currentLocation,
@@ -14,6 +15,7 @@ abstract class GuideState {
     this.target,
     this.currentStep,
     this.currentRotation,
+    this.compassSnapshot,
   });
 }
 
@@ -25,25 +27,55 @@ class BuildingChoosed extends GuideState {
   const BuildingChoosed({
     required Building building,
     required Node currentLocation,
-  }) : super(building: building, currentLocation: currentLocation);
+    required double currentRotation,
+    required double? compassSnapshot,
+  }) : super(
+          building: building,
+          currentLocation: currentLocation,
+          currentRotation: currentRotation,
+          compassSnapshot: compassSnapshot,
+        );
 }
 
 class GuideNavigationMode extends GuideState {
   const GuideNavigationMode({
     required Building building,
     required Node currentLocation,
+    required double currentRotation,
+    required double? compassSnapshot,
   }) : super(
           building: building,
           currentLocation: currentLocation,
+          currentRotation: currentRotation,
+          compassSnapshot: compassSnapshot,
         );
 }
 
 class GuideDescriptionMode extends GuideState {
   const GuideDescriptionMode({
     required Building building,
+    required double currentRotation,
+    required Node currentLocation,
+    required double? compassSnapshot,
   }) : super(
           building: building,
+          currentLocation: currentLocation,
+          currentRotation: currentRotation,
+          compassSnapshot: compassSnapshot,
         );
+  GuideDescriptionMode copyWith({
+    Building? building,
+    Node? currentLocation,
+    double? currentRotation,
+    double? compassSnapshot,
+  }) {
+    return GuideDescriptionMode(
+      building: building ?? this.building!,
+      currentLocation: currentLocation ?? this.currentLocation!,
+      currentRotation: currentRotation ?? this.currentRotation!,
+      compassSnapshot: compassSnapshot ?? this.compassSnapshot!,
+    );
+  }
 }
 
 class TargetChoosed extends GuideState {
@@ -53,7 +85,8 @@ class TargetChoosed extends GuideState {
     required List<Node> path,
     required int target,
     required int currentStep,
-    required RelativePosition currentRotation,
+    required double currentRotation,
+    required double? compassSnapshot,
   }) : super(
           building: building,
           currentLocation: currentLocation,
@@ -61,6 +94,7 @@ class TargetChoosed extends GuideState {
           target: target,
           currentStep: currentStep,
           currentRotation: currentRotation,
+          compassSnapshot: compassSnapshot,
         );
   TargetChoosed copyWith({
     Building? building,
@@ -68,7 +102,8 @@ class TargetChoosed extends GuideState {
     List<Node>? path,
     int? target,
     int? currentStep,
-    RelativePosition? currentRotation,
+    double? currentRotation,
+    double? compassSnapshot,
   }) {
     return TargetChoosed(
       building: building ?? this.building!,
@@ -77,6 +112,7 @@ class TargetChoosed extends GuideState {
       target: target ?? this.target!,
       currentStep: currentStep ?? this.currentStep!,
       currentRotation: currentRotation ?? this.currentRotation!,
+      compassSnapshot: compassSnapshot ?? this.compassSnapshot!,
     );
   }
 }

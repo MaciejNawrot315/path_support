@@ -21,14 +21,14 @@ class QrPairCubit extends Cubit<QrPairState> {
       if (state.prevBarcode!.format == BarcodeFormat.code128 &&
           currentBarcode.format == BarcodeFormat.qrCode) {
         emit(QrPairActive(
-            qrAngle: getQrAngle(state.prevBarcode!, currentBarcode),
+            qrAngle: getQrPairDirection(state.prevBarcode!, currentBarcode),
             barcode: state.prevBarcode,
             qrCode: currentBarcode,
             prevBarcode: currentBarcode));
       } else if (state.prevBarcode!.format == BarcodeFormat.qrCode &&
           currentBarcode.format == BarcodeFormat.code128) {
         emit(QrPairActive(
-            qrAngle: getQrAngle(currentBarcode, state.prevBarcode!),
+            qrAngle: getQrPairDirection(currentBarcode, state.prevBarcode!),
             barcode: currentBarcode,
             qrCode: state.prevBarcode,
             prevBarcode: currentBarcode));
@@ -38,7 +38,7 @@ class QrPairCubit extends Cubit<QrPairState> {
     }
   }
 
-  double getQrAngle(MyBarcode barcode, MyBarcode qrCode) {
+  double getQrPairDirection(MyBarcode barcode, MyBarcode qrCode) {
     List<Offset> barcodeCorners = barcode.corners;
     List<Offset> qrCodeCorners = qrCode.corners;
 
@@ -47,7 +47,7 @@ class QrPairCubit extends Cubit<QrPairState> {
     double qrCodeMidX = (qrCodeCorners[0].dx + qrCodeCorners[2].dx) / 2;
     double qrCodeMidY = (qrCodeCorners[0].dy + qrCodeCorners[2].dy) / 2;
     Offset offset = Offset(qrCodeMidX - barcodeMidX, qrCodeMidY - barcodeMidY);
-    print(convertToRelativePosition(offset.direction, RelativePosition.N));
+    // print(convertToRelativePosition(offset.direction, RelativePosition.N));
     return offset.direction;
   }
 

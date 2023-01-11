@@ -45,7 +45,9 @@ dependencies:
   hive_generator: ^2.0.0
   hive_flutter: ^1.1.0
   flutter_tts: ^3.6.2
-
+  searchfield: ^0.7.2
+  flutter_compass:
+    git: https://github.com/hemanthrajv/flutter_compass.git
 dev_dependencies:
   flutter_test:
     sdk: flutter

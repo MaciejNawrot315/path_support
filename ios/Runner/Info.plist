@@ -49,5 +49,9 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>This app would like to use your camera to watch your surroundings</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app would like to use your phone's sensors to detect where are you facing </string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app would like to use your phone's sensors to detect where are you facing </string>
 </dict>
 </plist>

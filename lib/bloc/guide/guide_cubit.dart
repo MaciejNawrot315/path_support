@@ -1,42 +1,63 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_support/models/building.dart';
-import 'package:path_support/models/message_to_read.dart';
 import 'package:path_support/models/node.dart';
 
 part 'guide_state.dart';
 
 class GuideCubit extends Cubit<GuideState> {
   GuideCubit() : super(const GuideInitial());
-  Future<void> newBuildingChoosed(
-      Building building, Node currentLocation) async {
-    emit(BuildingChoosed(building: building, currentLocation: currentLocation));
-  }
-
-  Future<void> findDestination(String name, RelativePosition qrAngle) async {
-    Building building = state.building!;
-    Node currentLocation = state.currentLocation!;
-    int target = building.graph.indexWhere((element) => element.name == name);
-    List<Node> path =
-        fastestPathToTargetDijkstra(currentLocation.index, target);
-    emit(TargetChoosed(
+  Future<void> newBuildingChoosed(Building building, Node currentLocation,
+      double currentRotation, double? compassSnapshot) async {
+    emit(BuildingChoosed(
       building: building,
       currentLocation: currentLocation,
-      path: path,
-      target: target,
-      currentStep: 0,
-      currentRotation: qrAngle,
+      currentRotation: currentRotation,
+      compassSnapshot: compassSnapshot,
     ));
   }
 
-  Future<void> nextStep(int newNodeIndex) async {
+  Future<bool> navigateTo(int target) async {
+    Building building = state.building!;
+    Node currentLocation = state.currentLocation!;
+    List<Node> path =
+        fastestPathToTargetDijkstra(currentLocation.index, target);
+    emit(TargetChoosed(
+        building: building,
+        currentLocation: currentLocation,
+        path: path,
+        target: target,
+        currentStep: 0,
+        currentRotation: state.currentRotation!,
+        compassSnapshot: state.compassSnapshot));
+    return true;
+  }
+
+  int findNodeIndex(String name) {
+    Building building = state.building!;
+    int target = building.graph.indexWhere(
+        (element) => element.name.toLowerCase() == name.toLowerCase());
+    return target;
+  }
+
+  Future<void> newCodeScannedInDescriptionMode(
+      int nodeIndex, double qrCodeRotation, double? compassSnapshot) async {
+    emit(GuideDescriptionMode(
+      building: state.building!,
+      currentLocation: state.building!.graph[nodeIndex],
+      currentRotation: qrCodeRotation,
+      compassSnapshot: compassSnapshot,
+    ));
+  }
+
+  Future<void> nextStep(int newNodeIndex, double? compassSnapshot) async {
     int currentStep = state.currentStep!;
     int nextStep = currentStep + 1;
     if (newNodeIndex == state.path[nextStep].index) {
       Node currentLocation = state.path[nextStep];
       emit((state as TargetChoosed).copyWith(
-        currentStep: nextStep,
-        currentLocation: currentLocation,
-      ));
+          currentStep: nextStep,
+          currentLocation: currentLocation,
+          compassSnapshot: compassSnapshot));
     }
   }
 
@@ -86,9 +107,16 @@ class GuideCubit extends Cubit<GuideState> {
     return shortestPath;
   }
 
-  void descriptionMode() {
+  void descriptionMode(
+      {Building? building,
+      Node? currentLocation,
+      double? currentRotation,
+      double? compassSnapshot}) {
     emit(GuideDescriptionMode(
-      building: state.building!,
+      building: building ?? state.building!,
+      currentLocation: currentLocation ?? state.currentLocation!,
+      currentRotation: currentRotation ?? state.currentRotation!,
+      compassSnapshot: compassSnapshot ?? state.compassSnapshot,
     ));
   }
 
@@ -96,6 +124,8 @@ class GuideCubit extends Cubit<GuideState> {
     emit(GuideNavigationMode(
       building: state.building!,
       currentLocation: state.currentLocation!,
+      currentRotation: state.currentRotation!,
+      compassSnapshot: state.compassSnapshot,
     ));
   }
 }

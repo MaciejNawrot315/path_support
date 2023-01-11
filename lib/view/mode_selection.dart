@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_support/bloc/guide/guide_cubit.dart';
 import 'package:path_support/constants/messages.dart';
+import 'package:path_support/view/return_button.dart';
 
 class ModeSelectionView extends StatelessWidget {
   const ModeSelectionView({super.key});
@@ -9,39 +10,65 @@ class ModeSelectionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Expanded(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: () => Messages.descriptionModeDesc.play(),
-                onDoubleTap: () {
-                  Messages.descriptionModeSelected.play();
-                  context.read<GuideCubit>().descriptionMode();
-                },
-                child: Container(
-                  color: Colors.red,
-                  child: const Text("description mode"),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Center(
+            child: Text(
+              "${Messages.buildingRecognized} ${context.read<GuideCubit>().state.building!.fullName}",
+            ),
+          ),
+          const Center(
+            child: Text(
+              "Choose a guide mode that you want to use:",
+            ),
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(
+                child: MergeSemantics(
+                  child: Semantics(
+                    label: Messages.descriptionMode,
+                    hint: Messages.descriptionModeHint,
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height / 4,
+                      child: TextButton(
+                        onPressed: () {
+                          context.read<GuideCubit>().descriptionMode();
+                        },
+                        child: const Text(Messages.descriptionMode),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              child: GestureDetector(
-                onTap: () => Messages.navigationModeDesc.play(),
-                onDoubleTap: () {
-                  Messages.navigationModeSelected.play();
-                  context.read<GuideCubit>().navigationMode();
-                },
-                child: Container(
-                  color: Colors.blue,
-                  child: const Text("navigation mode"),
+              Expanded(
+                child: MergeSemantics(
+                  child: Semantics(
+                    label: Messages.navigationMode,
+                    hint: Messages.navigationModeHint,
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height / 4,
+                      child: TextButton(
+                        onPressed: () {
+                          context.read<GuideCubit>().navigationMode();
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.red,
+                        ),
+                        child: const Center(
+                          child: Text(Messages.navigationMode),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
     );
   }
