@@ -5,7 +5,7 @@ import 'package:path_support/view/return_button.dart';
 import 'package:searchfield/searchfield.dart';
 
 class DestinationSelectionPage extends StatefulWidget {
-  DestinationSelectionPage({super.key});
+  const DestinationSelectionPage({super.key});
 
   @override
   State<DestinationSelectionPage> createState() =>
@@ -54,8 +54,11 @@ class _DestinationSelectionPageState extends State<DestinationSelectionPage> {
         SizedBox(
           height: MediaQuery.of(context).size.height / 4,
           child: Center(
-            child: Text(
-              guideState.building!.fullName,
+            child: Container(
+              color: Colors.white,
+              child: Text(
+                guideState.building!.fullName,
+              ),
             ),
           ),
         ),
@@ -78,6 +81,8 @@ class _DestinationSelectionPageState extends State<DestinationSelectionPage> {
           child: Semantics(
             excludeSemantics: textFieldFocused,
             child: TextButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.green)),
               onPressed: () async {
                 int targetIndex =
                     context.read<GuideCubit>().findNodeIndex(destination);

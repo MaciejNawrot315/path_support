@@ -3,7 +3,6 @@
 import 'dart:math';
 
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:path_support/constants/messages.dart';
 part 'message_to_read.g.dart';
 
 @HiveType(typeId: 5)
@@ -40,7 +39,6 @@ class MessageToRead {
     double temp = position.convertToRadians();
     double outcome = temp - cameraDirection;
     String tempString;
-    print(outcome);
     if ((outcome > pi / 8 && outcome <= 3 * pi / 8) ||
         (outcome > -15 * pi / 8 && outcome <= -13 * pi / 8)) {
       tempString = "in front of you to the left";

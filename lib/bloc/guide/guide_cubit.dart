@@ -61,10 +61,15 @@ class GuideCubit extends Cubit<GuideState> {
     }
   }
 
-  void targetReached() {
+  void targetReached(
+      {required Node currentLocation,
+      required double currentRotation,
+      double? compassSnapshot}) {
     emit(TargetReached(
-      currentLocation: state.currentLocation!,
+      currentLocation: currentLocation,
       building: state.building!,
+      currentRotation: currentRotation,
+      compassSnapshot: compassSnapshot,
     ));
   }
 

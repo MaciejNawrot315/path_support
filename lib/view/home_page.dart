@@ -61,15 +61,20 @@ class _HomePageState extends State<HomePage> {
                   return;
                 }
                 context.read<GuideCubit>().descriptionMode(
-                    currentLocation:
-                        guideState.building!.graph[state.qrCode!.pairIndex],
-                    currentRotation: state.qrAngle,
-                    compassSnapshot: context.read<CompassBloc>().state);
+                      currentLocation:
+                          guideState.building!.graph[state.qrCode!.pairIndex],
+                      currentRotation: state.qrAngle,
+                      compassSnapshot: context.read<CompassBloc>().state,
+                    );
                 return;
               }
               if (guideState is TargetChoosed) {
                 if (state.qrCode!.pairIndex == guideState.target) {
-                  context.read<GuideCubit>().targetReached();
+                  context.read<GuideCubit>().targetReached(
+                      currentLocation:
+                          guideState.building!.graph[state.qrCode!.pairIndex],
+                      currentRotation: state.qrAngle,
+                      compassSnapshot: context.read<CompassBloc>().state);
                   return;
                 }
                 context.read<GuideCubit>().nextStep(
@@ -118,10 +123,13 @@ class _HomePageState extends State<HomePage> {
                             builder: (context, state) {
                               return Column(
                                 children: [
-                                  SizedBox(height: 100),
-                                  const Center(
-                                    child: Text(
-                                        "start by scannning a qr code that should be located on the ground, in front of doors, stairs or elevators"),
+                                  const SizedBox(height: 100),
+                                  Center(
+                                    child: Container(
+                                      color: Colors.white,
+                                      child: const Text(
+                                          "start by scannning a qr code that should be located on the ground, in front of doors, stairs or elevators"),
+                                    ),
                                   ),
                                 ],
                               );
@@ -132,16 +140,25 @@ class _HomePageState extends State<HomePage> {
                           return const ModeSelectionView();
                         }
                         if (state is GuideNavigationMode) {
-                          return DestinationSelectionPage();
+                          return const DestinationSelectionPage();
                         }
                         if (state is GuideDescriptionMode) {
                           return const Center(
-                            child: DescriptionPage(),
+                            child: DescriptionPage(
+                              targetReached: false,
+                            ),
                           );
                         }
                         if (state is TargetChoosed) {
                           return const Center(
                             child: NavigationPage(),
+                          );
+                        }
+                        if (state is TargetReached) {
+                          return const Center(
+                            child: DescriptionPage(
+                              targetReached: false,
+                            ),
                           );
                         }
                         return const SizedBox();
@@ -157,6 +174,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+//////////////////////////////////////////////////////////////////////
   List<Node> fillGraph() {
     List<Node> graph = [];
     graph.addAll(

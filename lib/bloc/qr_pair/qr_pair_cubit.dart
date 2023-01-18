@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:path_support/models/message_to_read.dart';
 import 'package:path_support/models/qr_code.dart';
 
 part 'qr_pair_state.dart';

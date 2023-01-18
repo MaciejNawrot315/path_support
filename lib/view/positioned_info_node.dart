@@ -1,8 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:path_support/models/message_to_read.dart';
 
 class PositionedInfoNode extends StatelessWidget {
@@ -28,7 +26,6 @@ class PositionedInfoNode extends StatelessWidget {
     double messageRotation = messageToRead.position.convertToRadians();
     double temp = currentRotation - compassOffset();
     double angle2 = messageRotation - temp;
-    print("$angle2: angle2");
     var x = radius * sin(angle2 - pi);
     var y = radius * cos(angle2 - pi);
     return Positioned(

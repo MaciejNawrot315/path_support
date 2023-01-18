@@ -118,7 +118,14 @@ class TargetChoosed extends GuideState {
 }
 
 class TargetReached extends GuideState {
-  const TargetReached(
-      {required Building building, required Node currentLocation})
-      : super(currentLocation: currentLocation, building: building);
+  const TargetReached({
+    required Building building,
+    required double currentRotation,
+    required Node currentLocation,
+    required double? compassSnapshot,
+  }) : super(
+            currentLocation: currentLocation,
+            building: building,
+            currentRotation: currentRotation,
+            compassSnapshot: compassSnapshot);
 }

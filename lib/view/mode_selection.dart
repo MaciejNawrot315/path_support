@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_support/bloc/guide/guide_cubit.dart';
 import 'package:path_support/constants/messages.dart';
-import 'package:path_support/view/return_button.dart';
 
 class ModeSelectionView extends StatelessWidget {
   const ModeSelectionView({super.key});
@@ -15,13 +14,19 @@ class ModeSelectionView extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           Center(
-            child: Text(
-              "${Messages.buildingRecognized} ${context.read<GuideCubit>().state.building!.fullName}",
+            child: Container(
+              color: Colors.white,
+              child: Text(
+                "${Messages.buildingRecognized} ${context.read<GuideCubit>().state.building!.fullName}",
+              ),
             ),
           ),
-          const Center(
-            child: Text(
-              "Choose a guide mode that you want to use:",
+          Center(
+            child: Container(
+              color: Colors.white,
+              child: const Text(
+                "Choose a guide mode that you want to use:",
+              ),
             ),
           ),
           Row(
@@ -35,6 +40,9 @@ class ModeSelectionView extends StatelessWidget {
                     child: SizedBox(
                       height: MediaQuery.of(context).size.height / 4,
                       child: TextButton(
+                        style: const ButtonStyle(
+                            backgroundColor:
+                                MaterialStatePropertyAll(Colors.red)),
                         onPressed: () {
                           context.read<GuideCubit>().descriptionMode();
                         },

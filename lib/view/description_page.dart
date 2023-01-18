@@ -8,8 +8,8 @@ import 'package:path_support/view/return_button.dart';
 import 'package:path_support/view/ring_painter.dart';
 
 class DescriptionPage extends StatelessWidget {
-  const DescriptionPage({super.key});
-
+  const DescriptionPage({super.key, required this.targetReached});
+  final bool targetReached;
   @override
   Widget build(BuildContext context) {
     double nodeWidth = MediaQuery.of(context).size.width / 4;
@@ -49,9 +49,20 @@ class DescriptionPage extends StatelessWidget {
                   top: MediaQuery.of(context).size.height / 10,
                   child: Align(
                     alignment: Alignment.topCenter,
-                    child: Container(
-                      color: Colors.red,
-                      child: Text(guideState.currentLocation!.name),
+                    child: Column(
+                      children: [
+                        targetReached
+                            ? Container(
+                                color: Colors.red,
+                                child:
+                                    const Text("You reached your destination"),
+                              )
+                            : const SizedBox(),
+                        Container(
+                          color: Colors.red,
+                          child: Text(guideState.currentLocation!.name),
+                        ),
+                      ],
                     ),
                   ),
                 ),
