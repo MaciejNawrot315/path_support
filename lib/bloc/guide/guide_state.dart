@@ -23,8 +23,8 @@ class GuideInitial extends GuideState {
   const GuideInitial();
 }
 
-class BuildingChoosed extends GuideState {
-  const BuildingChoosed({
+class GuideModeSelection extends GuideState {
+  const GuideModeSelection({
     required Building building,
     required Node currentLocation,
     required double currentRotation,
@@ -37,8 +37,8 @@ class BuildingChoosed extends GuideState {
         );
 }
 
-class GuideNavigationMode extends GuideState {
-  const GuideNavigationMode({
+class GuideDestinationSelection extends GuideState {
+  const GuideDestinationSelection({
     required Building building,
     required Node currentLocation,
     required double currentRotation,
@@ -78,8 +78,8 @@ class GuideDescriptionMode extends GuideState {
   }
 }
 
-class TargetChoosed extends GuideState {
-  const TargetChoosed({
+class GuideNavigationMode extends GuideState {
+  const GuideNavigationMode({
     required Building building,
     required Node currentLocation,
     required List<Node> path,
@@ -96,7 +96,7 @@ class TargetChoosed extends GuideState {
           currentRotation: currentRotation,
           compassSnapshot: compassSnapshot,
         );
-  TargetChoosed copyWith({
+  GuideNavigationMode copyWith({
     Building? building,
     Node? currentLocation,
     List<Node>? path,
@@ -105,7 +105,7 @@ class TargetChoosed extends GuideState {
     double? currentRotation,
     double? compassSnapshot,
   }) {
-    return TargetChoosed(
+    return GuideNavigationMode(
       building: building ?? this.building!,
       currentLocation: currentLocation ?? this.currentLocation!,
       path: path ?? this.path,
@@ -117,8 +117,8 @@ class TargetChoosed extends GuideState {
   }
 }
 
-class TargetReached extends GuideState {
-  const TargetReached({
+class GuideTargetReached extends GuideState {
+  const GuideTargetReached({
     required Building building,
     required double currentRotation,
     required Node currentLocation,

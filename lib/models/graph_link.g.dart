@@ -1,30 +1,30 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'adj_node.dart';
+part of 'graph_link.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class AdjNodeAdapter extends TypeAdapter<AdjNode> {
+class AdjNodeAdapter extends TypeAdapter<GraphLink> {
   @override
   final int typeId = 3;
 
   @override
-  AdjNode read(BinaryReader reader) {
+  GraphLink read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return AdjNode(
+    return GraphLink(
       index: fields[0] as int,
       distance: fields[1] as double,
-      pathDescriptions: (fields[2] as List).cast<MessageToRead>(),
+      pathDescriptions: (fields[2] as List).cast<RelativelyPositionedMessage>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, AdjNode obj) {
+  void write(BinaryWriter writer, GraphLink obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)

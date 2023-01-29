@@ -13,8 +13,8 @@ abstract class QrPairState {
 
 class QrPairInitial extends QrPairState {}
 
-class QrPairInactive extends QrPairState {
-  QrPairInactive({required MyBarcode prevBarcode})
+class QrPairPartiallyFilled extends QrPairState {
+  QrPairPartiallyFilled({required MyBarcode prevBarcode})
       : super(prevBarcode: prevBarcode);
 }
 
@@ -24,7 +24,7 @@ class QrPairActive extends QrPairState {
     required this.qrAngle,
     required barcode,
     required qrCode,
-    required MyBarcode prevBarcode,
+    required prevBarcode,
   }) : super(
           barcode: barcode,
           qrCode: qrCode,

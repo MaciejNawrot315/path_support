@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:path_support/models/qr_code.dart';
+import 'package:path_support/models/my_barcode.dart';
 
 part 'qr_pair_state.dart';
 
 class QrPairCubit extends Cubit<QrPairState> {
   QrPairCubit() : super(QrPairInitial());
 
-  Future<void> updatePair(Barcode newBarcode) async {
+  void updatePair(Barcode newBarcode) {
     MyBarcode? currentBarcode = parseAndValidateQr(newBarcode);
     if (currentBarcode == null) return;
     if (state is QrPairInitial ||
         state.prevBarcode!.format == currentBarcode.format) {
-      emit(QrPairInactive(prevBarcode: currentBarcode));
+      emit(QrPairPartiallyFilled(prevBarcode: currentBarcode));
       return;
     }
     if (state.prevBarcode!.pairIndex == currentBarcode.pairIndex) {
@@ -33,7 +33,7 @@ class QrPairCubit extends Cubit<QrPairState> {
             prevBarcode: currentBarcode));
       }
     } else {
-      emit(QrPairInactive(prevBarcode: currentBarcode));
+      emit(QrPairPartiallyFilled(prevBarcode: currentBarcode));
     }
   }
 

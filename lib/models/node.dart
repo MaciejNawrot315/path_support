@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 
-import 'package:path_support/models/adj_node.dart';
-import 'package:path_support/models/message_to_read.dart';
+import 'package:path_support/models/graph_link.dart';
+import 'package:path_support/models/relatively_positioned_message.dart';
 part 'node.g.dart';
 
 @HiveType(typeId: 2)
@@ -13,9 +13,9 @@ class Node {
   @HiveField(2)
   int index;
   @HiveField(3)
-  List<AdjNode> adjNodes;
+  List<GraphLink> links;
   @HiveField(5)
-  List<MessageToRead> description;
+  List<RelativelyPositionedMessage> descriptions;
   @HiveField(4)
   double tempDistance;
 
@@ -23,8 +23,8 @@ class Node {
     required this.name,
     required this.tempParent,
     required this.index,
-    required this.adjNodes,
-    required this.description,
+    required this.links,
+    required this.descriptions,
     required this.tempDistance,
   });
 }

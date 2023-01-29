@@ -1,18 +1,18 @@
 import 'package:hive/hive.dart';
 
-import 'package:path_support/models/message_to_read.dart';
+import 'package:path_support/models/relatively_positioned_message.dart';
 
-part 'adj_node.g.dart';
+part 'graph_link.g.dart';
 
 @HiveType(typeId: 3)
-class AdjNode {
+class GraphLink {
   @HiveField(0)
   int index;
   @HiveField(1)
   double distance;
   @HiveField(2)
-  List<MessageToRead> pathDescriptions;
-  AdjNode({
+  List<RelativelyPositionedMessage> pathDescriptions;
+  GraphLink({
     required this.index,
     required this.distance,
     required this.pathDescriptions,

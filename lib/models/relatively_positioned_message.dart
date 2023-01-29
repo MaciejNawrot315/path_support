@@ -3,7 +3,7 @@
 import 'dart:math';
 
 import 'package:hive_flutter/hive_flutter.dart';
-part 'message_to_read.g.dart';
+part 'relatively_positioned_message.g.dart';
 
 @HiveType(typeId: 5)
 enum RelativePosition {
@@ -26,18 +26,18 @@ enum RelativePosition {
 }
 
 @HiveType(typeId: 4)
-class MessageToRead {
+class RelativelyPositionedMessage {
   @HiveField(0)
   String message;
   @HiveField(1)
   RelativePosition position;
-  MessageToRead({
+  RelativelyPositionedMessage({
     required this.message,
     required this.position,
   });
   String convertToRelativePosition(double cameraDirection) {
-    double temp = position.convertToRadians();
-    double outcome = temp - cameraDirection;
+    double textReleativeToCode = position.convertToRadians();
+    double outcome = textReleativeToCode - cameraDirection;
     String tempString;
     if ((outcome > pi / 8 && outcome <= 3 * pi / 8) ||
         (outcome > -15 * pi / 8 && outcome <= -13 * pi / 8)) {
@@ -65,36 +65,10 @@ class MessageToRead {
     }
     return message.replaceAll("!-!-!", tempString);
   }
-  // Future<void> play(double cameraOrientation) async {
-  //   String dirString = convertToRelativePosition(cameraOrientation,);
-  //   message.replaceAll("!-!-!", dirString).play();
-  // }
 }
 
 extension RelativePositionConvertion on RelativePosition {
   double convertToRadians() {
-    switch (this) {
-      case RelativePosition.N:
-        return -pi / 2;
-      case RelativePosition.NW:
-        return -pi / 4;
-      case RelativePosition.W:
-        return 0;
-      case RelativePosition.SW:
-        return pi / 4;
-      case RelativePosition.S:
-        return pi / 2;
-
-      case RelativePosition.SE:
-        return 3 * pi / 4;
-      case RelativePosition.E:
-        return pi;
-      case RelativePosition.NE:
-        return -3 * pi / 4;
-    }
-  }
-
-  double convertToDirectionString() {
     switch (this) {
       case RelativePosition.N:
         return -pi / 2;

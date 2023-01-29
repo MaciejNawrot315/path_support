@@ -20,8 +20,8 @@ class NodeAdapter extends TypeAdapter<Node> {
       name: fields[0] as String,
       tempParent: fields[1] as int,
       index: fields[2] as int,
-      adjNodes: (fields[3] as List).cast<AdjNode>(),
-      description: (fields[5] as List).cast<MessageToRead>(),
+      links: (fields[3] as List).cast<GraphLink>(),
+      descriptions: (fields[5] as List).cast<RelativelyPositionedMessage>(),
       tempDistance: fields[4] as double,
     );
   }
@@ -37,9 +37,9 @@ class NodeAdapter extends TypeAdapter<Node> {
       ..writeByte(2)
       ..write(obj.index)
       ..writeByte(3)
-      ..write(obj.adjNodes)
+      ..write(obj.links)
       ..writeByte(5)
-      ..write(obj.description)
+      ..write(obj.descriptions)
       ..writeByte(4)
       ..write(obj.tempDistance);
   }

@@ -8,7 +8,7 @@ class GuideCubit extends Cubit<GuideState> {
   GuideCubit() : super(const GuideInitial());
   Future<void> newBuildingChoosed(Building building, Node currentLocation,
       double currentRotation, double? compassSnapshot) async {
-    emit(BuildingChoosed(
+    emit(GuideModeSelection(
       building: building,
       currentLocation: currentLocation,
       currentRotation: currentRotation,
@@ -21,7 +21,7 @@ class GuideCubit extends Cubit<GuideState> {
     Node currentLocation = state.currentLocation!;
     List<Node> path =
         fastestPathToTargetDijkstra(currentLocation.index, target);
-    emit(TargetChoosed(
+    emit(GuideNavigationMode(
         building: building,
         currentLocation: currentLocation,
         path: path,
@@ -54,7 +54,7 @@ class GuideCubit extends Cubit<GuideState> {
     int nextStep = currentStep + 1;
     if (newNodeIndex == state.path[nextStep].index) {
       Node currentLocation = state.path[nextStep];
-      emit((state as TargetChoosed).copyWith(
+      emit((state as GuideNavigationMode).copyWith(
           currentStep: nextStep,
           currentLocation: currentLocation,
           compassSnapshot: compassSnapshot));
@@ -65,7 +65,7 @@ class GuideCubit extends Cubit<GuideState> {
       {required Node currentLocation,
       required double currentRotation,
       double? compassSnapshot}) {
-    emit(TargetReached(
+    emit(GuideTargetReached(
       currentLocation: currentLocation,
       building: state.building!,
       currentRotation: currentRotation,
@@ -73,6 +73,7 @@ class GuideCubit extends Cubit<GuideState> {
     ));
   }
 
+//TODO wybranie budynku w ktorym się jest na początku aplikacji
   List<Node> fastestPathToTargetDijkstra(int startingNode, int target) {
     List<Node> graph = state.building!.graph;
     for (Node node in graph) {
@@ -86,11 +87,11 @@ class GuideCubit extends Cubit<GuideState> {
 
     currentNode.tempDistance = 0;
     while (currentNode.index != target) {
-      for (int i = 0; i < currentNode.adjNodes.length; i++) {
-        int adjacentIndex = currentNode.adjNodes[i].index;
+      for (int i = 0; i < currentNode.links.length; i++) {
+        int adjacentIndex = currentNode.links[i].index;
 
         double totalDistance =
-            currentNode.tempDistance + currentNode.adjNodes[i].distance;
+            currentNode.tempDistance + currentNode.links[i].distance;
         if (totalDistance < graph[adjacentIndex].tempDistance) {
           graph[adjacentIndex].tempDistance = totalDistance;
           graph[adjacentIndex].tempParent = currentNode.index;
@@ -126,7 +127,7 @@ class GuideCubit extends Cubit<GuideState> {
   }
 
   void navigationMode() {
-    emit(GuideNavigationMode(
+    emit(GuideDestinationSelection(
       building: state.building!,
       currentLocation: state.currentLocation!,
       currentRotation: state.currentRotation!,

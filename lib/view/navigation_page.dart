@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_support/bloc/compass_bloc/compass_bloc.dart';
 import 'package:path_support/bloc/guide/guide_cubit.dart';
-import 'package:path_support/models/message_to_read.dart';
+import 'package:path_support/models/relatively_positioned_message.dart';
 import 'package:path_support/view/positioned_info_node.dart';
 import 'package:path_support/view/return_button.dart';
 import 'package:path_support/view/ring_painter.dart';
@@ -22,21 +22,21 @@ class NavigationPage extends StatelessWidget {
 
         return BlocBuilder<GuideCubit, GuideState>(
           builder: (context, guideState) {
-            List<MessageToRead> nextPathDescriptions = guideState
-                .currentLocation!.adjNodes
+            List<RelativelyPositionedMessage> nextPathDescriptions = guideState
+                .currentLocation!.links
                 .firstWhere((element) =>
                     element.index ==
                     guideState.path[guideState.currentStep! + 1].index)
                 .pathDescriptions;
             //TODO IN PRACA it should be ensured that there is only one description for one direction
-            for (MessageToRead message
-                in guideState.currentLocation!.description) {
+            for (RelativelyPositionedMessage message
+                in guideState.currentLocation!.descriptions) {
               infoNodes.add(PositionedInfoNode(
-                nodeHeight: nodeHeight,
-                nodeWidth: nodeWidth,
+                elementHeight: nodeHeight,
+                elementWidth: nodeWidth,
                 radius: radius,
-                messageToRead: message,
-                currentRotation: guideState.currentRotation!,
+                positionedDescription: message,
+                screenRotationSnapshot: guideState.currentRotation!,
                 compassSnapshot: guideState.compassSnapshot,
                 currentCompassSnapshot: compassState,
               ));

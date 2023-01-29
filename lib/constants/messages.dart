@@ -1,5 +1,3 @@
-import 'package:flutter_tts/flutter_tts.dart';
-
 class Messages {
   static const String navigationMode = "Navigation mode";
   static const String descriptionMode = "Description mode";
@@ -20,20 +18,4 @@ class Messages {
   static const String navigationModeSelected = "Navigation mode selected.";
   static const String descriptionModeSelected = "Description mode selected.";
   static const String skipVoiceCommands = "Skip voice commands";
-}
-
-FlutterTts flutterTts = FlutterTts();
-
-extension StringReading on String {
-  Future<void> play() async {
-    await flutterTts.stop();
-    await flutterTts.setLanguage("en-US");
-    await flutterTts.setPitch(1);
-    await flutterTts.setSpeechRate(0.53);
-    await flutterTts.speak(this);
-  }
-}
-
-Future<void> skipVoiceCommands() async {
-  await flutterTts.stop();
 }

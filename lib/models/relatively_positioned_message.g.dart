@@ -1,29 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'message_to_read.dart';
+part of 'relatively_positioned_message.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class MessageToReadAdapter extends TypeAdapter<MessageToRead> {
+class MessageToReadAdapter extends TypeAdapter<RelativelyPositionedMessage> {
   @override
   final int typeId = 4;
 
   @override
-  MessageToRead read(BinaryReader reader) {
+  RelativelyPositionedMessage read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return MessageToRead(
+    return RelativelyPositionedMessage(
       message: fields[0] as String,
       position: fields[1] as RelativePosition,
     );
   }
 
   @override
-  void write(BinaryWriter writer, MessageToRead obj) {
+  void write(BinaryWriter writer, RelativelyPositionedMessage obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
