@@ -1,17 +1,23 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:hive/hive.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+
 import 'package:path_support/bloc/compass_bloc/compass_bloc.dart';
 import 'package:path_support/bloc/guide/guide_cubit.dart';
 import 'package:path_support/bloc/qr_pair/qr_pair_cubit.dart';
 import 'package:path_support/constants/messages.dart';
-import 'package:path_support/models/graph_link.dart';
 import 'package:path_support/models/building.dart';
-import 'package:path_support/models/relatively_positioned_message.dart';
-import 'package:path_support/models/node.dart';
+import 'package:path_support/models/graph_link.dart';
 import 'package:path_support/models/my_barcode.dart';
+import 'package:path_support/models/node.dart';
+import 'package:path_support/models/relatively_positioned_message.dart';
 import 'package:path_support/view/description_page.dart';
 import 'package:path_support/view/destination_selection_page.dart';
 import 'package:path_support/view/mode_selection.dart';
@@ -29,12 +35,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    Box<dynamic> box = Hive.box('buildings');
-    Building building = Building(
-        name: "PSL",
-        graph: fillGraph(),
-        fullName: "Silesian University of Technology");
-    box.put(building.name, building);
+
     // box.delete(building.name);
     FlutterCompass.events?.listen((event) {
       context.read<CompassBloc>().add(event);
@@ -125,6 +126,21 @@ class _HomePageState extends State<HomePage> {
                                         "start by scannning a qr code that should be located on the ground, in front of doors, stairs or elevators"),
                                   ),
                                 ),
+                                const Expanded(
+                                  child: SizedBox(),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    TextButton(
+                                      style: TextButton.styleFrom(
+                                          backgroundColor: Colors.green,
+                                          foregroundColor: Colors.black),
+                                      onPressed: () => loadFile(),
+                                      child: const Text("upload building maps"),
+                                    ),
+                                  ],
+                                )
                               ],
                             );
                           },
@@ -151,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                       if (state is GuideTargetReached) {
                         return const Center(
                           child: DescriptionPage(
-                            targetReached: false,
+                            targetReached: true,
                           ),
                         );
                       }
@@ -167,6 +183,21 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Future<void> loadFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['json'],
+    );
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      String value = await file.readAsString();
+      Building building =
+          Building.fromJson(json.decode(value) as Map<String, dynamic>);
+      Box<dynamic> box = Hive.box('buildings');
+      box.put(building.name, building);
+    }
+  }
+
 //////////////////////////////////////////////////////////////////////
   List<Node> fillGraph() {
     List<Node> graph = [];
@@ -174,7 +205,6 @@ class _HomePageState extends State<HomePage> {
       [
         Node(
           name: "kitchen",
-          tempParent: -1,
           index: 0,
           links: [
             GraphLink(
@@ -205,11 +235,9 @@ class _HomePageState extends State<HomePage> {
               position: RelativePosition.S,
             ),
           ],
-          tempDistance: double.infinity,
         ),
         Node(
           name: "corridor end",
-          tempParent: -1,
           index: 1,
           links: [
             GraphLink(
@@ -232,11 +260,9 @@ class _HomePageState extends State<HomePage> {
               position: RelativePosition.S,
             ),
           ],
-          tempDistance: double.infinity,
         ),
         Node(
           name: "middle of the corridor",
-          tempParent: -1,
           index: 2,
           links: [
             GraphLink(
@@ -285,11 +311,9 @@ class _HomePageState extends State<HomePage> {
               position: RelativePosition.SW,
             ),
           ],
-          tempDistance: double.infinity,
         ),
         Node(
           name: "Maciek's room",
-          tempParent: -1,
           index: 3,
           links: [
             GraphLink(
@@ -320,11 +344,9 @@ class _HomePageState extends State<HomePage> {
               position: RelativePosition.W,
             ),
           ],
-          tempDistance: double.infinity,
         ),
         Node(
           name: "start of the corridor upstairs",
-          tempParent: -1,
           index: 4,
           links: [
             GraphLink(
@@ -356,11 +378,9 @@ class _HomePageState extends State<HomePage> {
               position: RelativePosition.W,
             ),
           ],
-          tempDistance: double.infinity,
         ),
         Node(
           name: "entrance",
-          tempParent: -1,
           index: 5,
           links: [
             GraphLink(
@@ -396,11 +416,9 @@ class _HomePageState extends State<HomePage> {
               position: RelativePosition.N,
             ),
           ],
-          tempDistance: double.infinity,
         ),
         Node(
           name: "christmas tree",
-          tempParent: -1,
           index: 6,
           links: [
             GraphLink(
@@ -436,7 +454,6 @@ class _HomePageState extends State<HomePage> {
               position: RelativePosition.E,
             ),
           ],
-          tempDistance: double.infinity,
         ),
       ],
     );
@@ -449,7 +466,7 @@ class _HomePageState extends State<HomePage> {
 //         index: i,
 //         tempParent: -1,
 //         adjNodes: [],
-//         tempDistance: double.infinity,
+//         tempDistance: 0,
 //         description: [
 //           MessageToRead(
 //             message: "Bass is !-!-!",

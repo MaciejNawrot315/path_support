@@ -45,3 +45,21 @@ class BuildingAdapter extends TypeAdapter<Building> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Building _$BuildingFromJson(Map<String, dynamic> json) => Building(
+      name: json['name'] as String,
+      graph: (json['graph'] as List<dynamic>)
+          .map((e) => Node.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      fullName: json['fullName'] as String,
+    );
+
+Map<String, dynamic> _$BuildingToJson(Building instance) => <String, dynamic>{
+      'name': instance.name,
+      'graph': instance.graph.map((e) => e.toJson()).toList(),
+      'fullName': instance.fullName,
+    };

@@ -46,6 +46,10 @@ dependencies:
   searchfield: ^0.7.2
   flutter_compass:
     git: https://github.com/hemanthrajv/flutter_compass.git
+  json_serializable: ^6.6.0
+  json_annotation: ^4.8.0
+  file_picker: ^5.2.5
+  bloc_test: ^9.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

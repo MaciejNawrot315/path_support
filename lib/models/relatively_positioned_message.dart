@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'dart:math';
+import 'package:json_annotation/json_annotation.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 part 'relatively_positioned_message.g.dart';
@@ -25,6 +26,7 @@ enum RelativePosition {
   NE
 }
 
+@JsonSerializable()
 @HiveType(typeId: 4)
 class RelativelyPositionedMessage {
   @HiveField(0)
@@ -35,6 +37,12 @@ class RelativelyPositionedMessage {
     required this.message,
     required this.position,
   });
+  factory RelativelyPositionedMessage.fromJson(Map<String, dynamic> json) =>
+      _$RelativelyPositionedMessageFromJson(json);
+
+  /// Connect the generated [_$PersonToJson] function to the `toJson` method.
+  Map<String, dynamic> toJson() => _$RelativelyPositionedMessageToJson(this);
+
   String convertToRelativePosition(double cameraDirection) {
     double textReleativeToCode = position.convertToRadians();
     double outcome = textReleativeToCode - cameraDirection;

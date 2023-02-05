@@ -1,4 +1,38 @@
 PODS:
+  - DKImagePickerController/Core (4.3.4):
+    - DKImagePickerController/ImageDataManager
+    - DKImagePickerController/Resource
+  - DKImagePickerController/ImageDataManager (4.3.4)
+  - DKImagePickerController/PhotoGallery (4.3.4):
+    - DKImagePickerController/Core
+    - DKPhotoGallery
+  - DKImagePickerController/Resource (4.3.4)
+  - DKPhotoGallery (0.0.17):
+    - DKPhotoGallery/Core (= 0.0.17)
+    - DKPhotoGallery/Model (= 0.0.17)
+    - DKPhotoGallery/Preview (= 0.0.17)
+    - DKPhotoGallery/Resource (= 0.0.17)
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Core (0.0.17):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Preview
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Model (0.0.17):
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Preview (0.0.17):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Resource
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Resource (0.0.17):
+    - SDWebImage
+    - SwiftyGif
+  - file_picker (0.0.1):
+    - DKImagePickerController/PhotoGallery
+    - Flutter
   - Flutter (1.0.0)
   - flutter_compass (0.0.1):
     - Flutter
@@ -64,8 +98,13 @@ PODS:
     - Flutter
   - PromisesObjC (2.1.1)
   - Protobuf (3.21.7)
+  - SDWebImage (5.15.0):
+    - SDWebImage/Core (= 5.15.0)
+  - SDWebImage/Core (5.15.0)
+  - SwiftyGif (5.4.4)
 
 DEPENDENCIES:
+  - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
   - flutter_compass (from `.symlinks/plugins/flutter_compass/ios`)
   - mobile_scanner (from `.symlinks/plugins/mobile_scanner/ios`)
@@ -73,6 +112,8 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - DKImagePickerController
+    - DKPhotoGallery
     - GoogleDataTransport
     - GoogleMLKit
     - GoogleToolboxForMac
@@ -86,8 +127,12 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - Protobuf
+    - SDWebImage
+    - SwiftyGif
 
 EXTERNAL SOURCES:
+  file_picker:
+    :path: ".symlinks/plugins/file_picker/ios"
   Flutter:
     :path: Flutter
   flutter_compass:
@@ -98,6 +143,9 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider_ios/ios"
 
 SPEC CHECKSUMS:
+  DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
+  DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
+  file_picker: ce3938a0df3cc1ef404671531facef740d03f920
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_compass: cbbd285cea1584c7ac9c4e0c3e1f17cbea55e855
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
@@ -115,6 +163,8 @@ SPEC CHECKSUMS:
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   Protobuf: f4128517d7a42302e106cc3afe614ee3a7513e94
+  SDWebImage: 9bec4c5cdd9579e1f57104735ee0c37df274d593
+  SwiftyGif: 93a1cc87bf3a51916001cf8f3d63835fb64c819f
 
 PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
 

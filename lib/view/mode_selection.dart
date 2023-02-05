@@ -41,8 +41,13 @@ class ModeSelectionView extends StatelessWidget {
                       height: MediaQuery.of(context).size.height / 4,
                       child: TextButton(
                         style: const ButtonStyle(
-                            backgroundColor:
-                                MaterialStatePropertyAll(Colors.red)),
+                          backgroundColor: MaterialStatePropertyAll(
+                            Colors.red,
+                          ),
+                          foregroundColor: MaterialStatePropertyAll(
+                            Colors.black,
+                          ),
+                        ),
                         onPressed: () {
                           context.read<GuideCubit>().descriptionMode();
                         },
@@ -51,6 +56,9 @@ class ModeSelectionView extends StatelessWidget {
                     ),
                   ),
                 ),
+              ),
+              SizedBox(
+                width: 10,
               ),
               Expanded(
                 child: MergeSemantics(
@@ -65,6 +73,7 @@ class ModeSelectionView extends StatelessWidget {
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.red,
+                          foregroundColor: Colors.black,
                         ),
                         child: const Center(
                           child: Text(Messages.navigationMode),

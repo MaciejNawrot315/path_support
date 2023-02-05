@@ -4,6 +4,7 @@ import 'package:path_support/models/node.dart';
 
 part 'guide_state.dart';
 
+/// A Bloc component that manages the guiding process.
 class GuideCubit extends Cubit<GuideState> {
   GuideCubit() : super(const GuideInitial());
   Future<void> newBuildingChoosed(Building building, Node currentLocation,
@@ -16,7 +17,8 @@ class GuideCubit extends Cubit<GuideState> {
     ));
   }
 
-  Future<bool> navigateTo(int target) async {
+  /// Emits [GuideNavigationMode] state if
+  void navigateTo(int target) {
     Building building = state.building!;
     Node currentLocation = state.currentLocation!;
     List<Node> path =
@@ -29,7 +31,6 @@ class GuideCubit extends Cubit<GuideState> {
         currentStep: 0,
         currentRotation: state.currentRotation!,
         compassSnapshot: state.compassSnapshot));
-    return true;
   }
 
   int findNodeIndex(String name) {

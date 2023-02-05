@@ -6,7 +6,7 @@ part of 'graph_link.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class AdjNodeAdapter extends TypeAdapter<GraphLink> {
+class GraphLinkAdapter extends TypeAdapter<GraphLink> {
   @override
   final int typeId = 3;
 
@@ -41,7 +41,26 @@ class AdjNodeAdapter extends TypeAdapter<GraphLink> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AdjNodeAdapter &&
+      other is GraphLinkAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+GraphLink _$GraphLinkFromJson(Map<String, dynamic> json) => GraphLink(
+      index: json['index'] as int,
+      distance: (json['distance'] as num).toDouble(),
+      pathDescriptions: (json['pathDescriptions'] as List<dynamic>)
+          .map((e) =>
+              RelativelyPositionedMessage.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$GraphLinkToJson(GraphLink instance) => <String, dynamic>{
+      'index': instance.index,
+      'distance': instance.distance,
+      'pathDescriptions': instance.pathDescriptions,
+    };

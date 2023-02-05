@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Path Support',
         home: HomePage(),
       ),

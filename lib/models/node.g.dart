@@ -18,12 +18,12 @@ class NodeAdapter extends TypeAdapter<Node> {
     };
     return Node(
       name: fields[0] as String,
-      tempParent: fields[1] as int,
       index: fields[2] as int,
       links: (fields[3] as List).cast<GraphLink>(),
       descriptions: (fields[5] as List).cast<RelativelyPositionedMessage>(),
-      tempDistance: fields[4] as double,
-    );
+    )
+      ..tempParent = fields[1] as int
+      ..tempDistance = fields[4] as double;
   }
 
   @override
@@ -54,3 +54,26 @@ class NodeAdapter extends TypeAdapter<Node> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Node _$NodeFromJson(Map<String, dynamic> json) => Node(
+      name: json['name'] as String,
+      index: json['index'] as int,
+      links: (json['links'] as List<dynamic>)
+          .map((e) => GraphLink.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      descriptions: (json['descriptions'] as List<dynamic>)
+          .map((e) =>
+              RelativelyPositionedMessage.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$NodeToJson(Node instance) => <String, dynamic>{
+      'name': instance.name,
+      'index': instance.index,
+      'links': instance.links.map((e) => e.toJson()).toList(),
+      'descriptions': instance.descriptions.map((e) => e.toJson()).toList(),
+    };

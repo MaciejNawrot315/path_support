@@ -6,7 +6,8 @@ part of 'relatively_positioned_message.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class MessageToReadAdapter extends TypeAdapter<RelativelyPositionedMessage> {
+class RelativelyPositionedMessageAdapter
+    extends TypeAdapter<RelativelyPositionedMessage> {
   @override
   final int typeId = 4;
 
@@ -38,7 +39,7 @@ class MessageToReadAdapter extends TypeAdapter<RelativelyPositionedMessage> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is MessageToReadAdapter &&
+      other is RelativelyPositionedMessageAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -111,3 +112,32 @@ class RelativePositionAdapter extends TypeAdapter<RelativePosition> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+RelativelyPositionedMessage _$RelativelyPositionedMessageFromJson(
+        Map<String, dynamic> json) =>
+    RelativelyPositionedMessage(
+      message: json['message'] as String,
+      position: $enumDecode(_$RelativePositionEnumMap, json['position']),
+    );
+
+Map<String, dynamic> _$RelativelyPositionedMessageToJson(
+        RelativelyPositionedMessage instance) =>
+    <String, dynamic>{
+      'message': instance.message,
+      'position': _$RelativePositionEnumMap[instance.position]!,
+    };
+
+const _$RelativePositionEnumMap = {
+  RelativePosition.N: 'N',
+  RelativePosition.NW: 'NW',
+  RelativePosition.W: 'W',
+  RelativePosition.SW: 'SW',
+  RelativePosition.S: 'S',
+  RelativePosition.SE: 'SE',
+  RelativePosition.E: 'E',
+  RelativePosition.NE: 'NE',
+};
